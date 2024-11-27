@@ -3,6 +3,40 @@
 (5시간 제한) <br>
 10:40 시작 <br>
 -> 15:40 종료 예정 <br>
+11:16 기능 요구사항 정리 완료 / jgrapht 라이브러리 공부 <br>
+
+<br><br>
+
+## 기능 구현
+
+- [ ] 입력
+    - [ ] 메인화면 원하는 기능 선택 1/Q
+        - [ ] 1또는 Q가 아닌 경우 예외
+    - [ ] 경로기준 1/2/B
+        - [ ] 1/2/B 가 아닌 경우 예외
+    - [ ] 출발역
+    - [ ] 도착역
+        - [ ] 출도착역이 각각 없으면 예외
+        - [ ] 출도착역이 같으면 예외
+        - [ ] 출도착역이 연결되어 있지 않으면 예외
+- [ ] 출력
+    - [ ] 메인화면 (1.경로조회/Q.종료)
+    - [ ] 경로 기준 (1.최단거리/2.최소시간/B.돌아가기)
+    - [ ] 조회 결과
+        - [ ] 구분선 / 총거리 / 총소요시간 / 출발-경유-도착역 나열 / [INFO] 앞에 붙이
+- [ ] 입출력 입력에 따른 기능 구현
+    - [ ] 메인 입력에 Q -> 끝내야함
+    - [ ] 경로 기준의 B -> 메인화면으로 돌아가야 함
+    - [ ] 에러 입력 -> 메인->메인 / 경로기준->경로기준 / 출도착->경로기준
+    - [ ] Q 이전까지 무한 반복
+- [ ] 기능
+    - [ ] 도메인 추가(station, line 정보 포함)
+    - [ ] 노선 그래프 추가 (노선 별 거리/시간 그래프 둘 다 추가)
+    - [ ] 환승역 기준 (교대역/양재역) 노선 정점 add하여
+        - 거거거/시시시 그래프 완성 (최단/최소 기준만 있기 때문)
+    - [ ] 원하는 기능 선택에 따라 그래프에서 최단거리/최소시간 가져오기 -> edge가중치 총합
+    - [ ] 해당 경로에 따른 소요시간/총거리(edge 가중치)도 가져오기
+    - [ ] 기타
 
 <br><br>
 
@@ -126,61 +160,12 @@ B. 돌아가기
 
 <br>
 
-## 🎱 프로그래밍 요구사항
-
-- 자바 코드 컨벤션을 지키면서 프로그래밍한다.
-    - 기본적으로 [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)을 원칙으로 한다.
-    - 단, 들여쓰기는 '2 spaces'가 아닌 '4 spaces'로 한다.
-- indent(인덴트, 들여쓰기) depth를 3이 넘지 않도록 구현한다. 2까지만 허용한다.
-    - 예를 들어 while문 안에 if문이 있으면 들여쓰기는 2이다.
-    - 힌트: indent(인덴트, 들여쓰기) depth를 줄이는 좋은 방법은 함수(또는 메소드)를 분리하면 된다.
-- 3항 연산자를 쓰지 않는다.
-- 함수(또는 메소드)의 길이가 15라인을 넘어가지 않도록 구현한다.
-    - 함수(또는 메소드)가 한 가지 일만 잘 하도록 구현한다.
-- else 예약어를 쓰지 않는다.
-    - 힌트: if 조건절에서 값을 return하는 방식으로 구현하면 else를 사용하지 않아도 된다.
-    - else를 쓰지 말라고 하니 switch/case로 구현하는 경우가 있는데 switch/case도 허용하지 않는다.
-- 프로그래밍 요구사항에서 별도로 변경 불가 안내가 없는 경우 파일 수정과 패키지 이동을 자유롭게 할 수 있다.
-- 예외 상황 시 에러 문구를 출력해야 한다. 단, 에러 문구는 `[ERROR]` 로 시작해야 한다.
-
-### 프로그래밍 요구사항 - Application
-
-- Application 클래스를 활용해 구현해야 한다.
-- Application의 패키지 구조는 변경하지 않는다.
-- Application 클래스에 있는 Scanner를 사용하고 별도의 Scanner 객체를 만들지 않는다.
-
-```java
-public class Application {
-    public static void main(String[] args) {
-        final Scanner scanner = new Scanner(System.in);
-        ...
-    }
-}
-```
-
 ### 프로그래밍 요구사항 - Station, Line
 
 - Station, Line 클래스를 활용하여 지하철역과 노선을 구현해야 한다.
 - 제공하는 각 클래스의 기본 생성자를 추가할 수 없다.
 - 필드(인스턴스 변수)인 name의 접근 제어자 private을 변경할 수 없다.
 - 가능하면 setter 메소드(ex. setXXX)를 추가하지 않고 구현한다.
-
-```java
-public class Station {
-    private String name;
-
-    public Station(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    // 추가 기능 구현
-}
-
-```
 
 ### 프로그래밍 요구사항 - StationRepository, LineRepository
 
@@ -189,28 +174,6 @@ public class Station {
 - 추가로 생성되는 객체에 대해서 XXXRepository 네이밍으로 저장 클래스를 추가한다.
 - 객체들의 상태를 관리하기 위해서 XXXRepository 클래스를 활용해 저장 로직을 구현해야 한다.
 - 작성된 메서드는 수정할 수 없고, 필요에 따라 메서드를 자유롭게 추가할 수 있다.
-
-```java
-public class StationRepository {
-    private static final List<Station> stations = new ArrayList<>();
-
-    public static List<Station> stations() {
-        return Collections.unmodifiableList(stations);
-    }
-
-    public static void addStation(Station station) {
-        stations.add(station);
-    }
-
-    public static boolean deleteStation(String name) {
-        return stations.removeIf(station -> Objects.equals(station.getName(), name));
-    }
-
-    public static void deleteAll() {
-        stations.clear();
-    }
-}
-```
 
 <br>
 
@@ -227,45 +190,3 @@ public class StationRepository {
     - 가중치: 거리 or 소요 시간
 - 최단 거리 기준 조회 시 가중치를 거리로 설정
 
-```java
-@Test
-public void getDijkstraShortestPath(){
-        WeightedMultigraph<String, DefaultWeightedEdge> graph
-        =new WeightedMultigraph(DefaultWeightedEdge.class);
-        graph.addVertex("v1");
-        graph.addVertex("v2");
-        graph.addVertex("v3");
-        graph.setEdgeWeight(graph.addEdge("v1","v2"),2);
-        graph.setEdgeWeight(graph.addEdge("v2","v3"),2);
-        graph.setEdgeWeight(graph.addEdge("v1","v3"),100);
-
-        DijkstraShortestPath dijkstraShortestPath=new DijkstraShortestPath(graph);
-        List<String> shortestPath=dijkstraShortestPath.getPath("v3","v1").getVertexList();
-
-        assertThat(shortestPath.size()).isEqualTo(3);
-        }
-```
-
-#### 테스트 설명
-
-<img src="image/dijkstra-sample.png" width=400>
-
-- 역 사이의 거리를 고려하지 않는 경우 V1->V3 경로가 최단 경로
-- 역 사이의 거리를 고려할 경우 V1->V3 경로의 거리는 100km, V1->V2->V3 경로의 거리는 4km이므로 최단 경로는 V1->V2->V3
-
-<br>
-
-## 📈 진행 요구사항
-
-- 미션은 [java-subway-path-precourse 저장소](https://github.com/woowacourse/java-subway-path-precourse) 를 fork/clone해 시작한다.
-- 기능을 구현하기 전에 java-subway-path-precourse/docs/README.md 파일에 구현할 기능 목록을 정리해 추가한다.
-- git의 commit 단위는 앞 단계에서 README.md 파일에 정리한 기능 목록 단위로 추가한다.
-    - [AngularJS Commit Message Conventions](https://gist.github.com/stephenparish/9941e89d80e2bc58a153) 참고해 commit log를
-      남긴다.
-- [프리코스 과제 제출 문서](https://github.com/woowacourse/woowacourse-docs/tree/master/precourse) 절차를 따라 미션을 제출한다.
-    - [프리코스 과제 FAQ](https://github.com/woowacourse/woowacourse-docs/tree/master/precourse/faq) 문서를 참고하여 진행할 수 있다.
-      <br>
-
-## 📝 License
-
-This project is [MIT](https://github.com/woowacourse/java-subway-path-precourse/blob/master/LICENSE.md) licensed.
