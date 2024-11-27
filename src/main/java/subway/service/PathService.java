@@ -9,18 +9,12 @@ import subway.domain.StationLine;
 public class PathService {
 
     // 거리, 시간 둘 다 쓸 수 있음 (그래프 종류만 다르게 넣으면 됨)
-    public int getShortestPath(StationLine start, StationLine end,
-                               WeightedMultigraph<String, DefaultWeightedEdge> graph) {
+    public double getShortestPath(StationLine start, StationLine end,
+                                  WeightedMultigraph<String, DefaultWeightedEdge> graph) {
         DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
-        List<Integer> shortestPath = dijkstraShortestPath.getPath(end.getStation().getName(),
-                start.getStation().getName()).getEdgeList();
-
-        int sum = 0;
-        for (Integer d : shortestPath) {
-            System.out.println(d);
-            sum += d;
-        }
-        return sum;
+        double shortestPath = dijkstraShortestPath.getPath(end.getStation().getName(),
+                start.getStation().getName()).getWeight();
+        return shortestPath;
     }
 
     public List<String> getShortestPathVertex(StationLine start, StationLine end,

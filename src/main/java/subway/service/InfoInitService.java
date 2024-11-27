@@ -36,14 +36,14 @@ public class InfoInitService {
         return StationLineRepository.stationLines();
     }
 
-    public WeightedMultigraph<String, DefaultWeightedEdge> stationLineGraphDistance() {
+    public static WeightedMultigraph<String, DefaultWeightedEdge> stationLineGraphDistance() {
         WeightedMultigraph<String, DefaultWeightedEdge> distance = new WeightedMultigraph(DefaultWeightedEdge.class);
         addVertex(distance);
         addEdgeWeight(distance);
         return distance;
     }
 
-    public void addVertex(WeightedMultigraph<String, DefaultWeightedEdge> distance) {
+    public static void addVertex(WeightedMultigraph<String, DefaultWeightedEdge> distance) {
         distance.addVertex("교대역");
         distance.addVertex("강남역");
         distance.addVertex("역삼역");
@@ -53,7 +53,7 @@ public class InfoInitService {
         distance.addVertex("매봉역");
     }
 
-    public void addEdgeWeight(WeightedMultigraph<String, DefaultWeightedEdge> distance) {
+    public static void addEdgeWeight(WeightedMultigraph<String, DefaultWeightedEdge> distance) {
         distance.setEdgeWeight(distance.addEdge("교대역", "강남역"), 2);
         distance.setEdgeWeight(distance.addEdge("강남역", "역삼역"), 2);
         distance.setEdgeWeight(distance.addEdge("교대역", "남부터미널역"), 3);
@@ -63,14 +63,14 @@ public class InfoInitService {
         distance.setEdgeWeight(distance.addEdge("양재역", "양재시민의숲역"), 10);
     }
 
-    public WeightedMultigraph<String, DefaultWeightedEdge> stationLineGraphTime() {
+    public static WeightedMultigraph<String, DefaultWeightedEdge> stationLineGraphTime() {
         WeightedMultigraph<String, DefaultWeightedEdge> time = new WeightedMultigraph(DefaultWeightedEdge.class);
         addVertex(time);
         addEdgeWeightTime(time);
         return time;
     }
 
-    public void addEdgeWeightTime(WeightedMultigraph<String, DefaultWeightedEdge> time) {
+    public static void addEdgeWeightTime(WeightedMultigraph<String, DefaultWeightedEdge> time) {
         time.setEdgeWeight(time.addEdge("교대역", "강남역"), 3);
         time.setEdgeWeight(time.addEdge("강남역", "역삼역"), 3);
         time.setEdgeWeight(time.addEdge("교대역", "남부터미널역"), 2);
