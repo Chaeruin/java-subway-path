@@ -32,14 +32,21 @@ public class SubwayController {
         initSubway();
         String mainMenuInput = getMainMenuInput();
         while (!mainMenuInput.equals("Q")) {
-            outputView.printPathCrit();
-            String pathInput = inputPathHandler();
+            String pathInput = getPathCrit();
             if (pathInput.equals("B")) {
                 mainMenuInput = getMainMenuInput();
+                continue;
             }
             StationLine start = inputStartStationHandler();
+            if (start == null) {
+                pathInput = getPathCrit();
+                continue;
+            }
             StationLine end = inputEndStationHandler(start.getStation().getName());
-
+            if (end == null) {
+                pathInput = getPathCrit();
+                continue;
+            }
             shortestGetterHandler(pathInput, start, end);
             mainMenuInput = getMainMenuInput();
         }
@@ -56,6 +63,11 @@ public class SubwayController {
         return inputMenuHandler();
     }
 
+    public String getPathCrit() {
+        outputView.printPathCrit();
+        return inputPathHandler();
+    }
+
     public void shortestGetterHandler(String pathInput, StationLine start, StationLine end) {
         boolean isFlag = false;
         while (!isFlag) {
@@ -69,26 +81,33 @@ public class SubwayController {
     }
 
     public boolean getShortestAndAccordingPrint(String pathInput, StationLine start, StationLine end) {
-        List<String> vertex = null;
         if (pathInput.equals("1")) {
-            double shortest = pathService.getShortestPath(start, end, distance);
-            vertex = pathService.getShortestPathVertex(start, end, distance);
-            if (vertex.size() == 0) {
-                throw new IllegalArgumentException(ErrorMessage.INVALID_STATION_NOT_CONNECTED.getErrorMessage());
-            }
-            double according = pathService.getIntAccordingToDistanceShortest(vertex, time);
-            outputView.printResultDistance(shortest, according, vertex);
+            setShortestDistanceAndAccording(start, end);
         }
         if (pathInput.equals("2")) {
-            vertex = pathService.getShortestPathVertex(start, end, time);
-            if (vertex.size() == 0) {
-                throw new IllegalArgumentException(ErrorMessage.INVALID_STATION_NOT_CONNECTED.getErrorMessage());
-            }
-            double according = pathService.getIntAccordingToTimeShortest(vertex, distance);
-            double shortest = pathService.getShortestPath(start, end, time);
-            outputView.printResultTime(shortest, according, vertex);
+            setShortestTimeAndAccording(start, end);
         }
         return true;
+    }
+
+    public void setShortestDistanceAndAccording(StationLine start, StationLine end) {
+        double shortest = pathService.getShortestPath(start, end, distance);
+        List<String> vertex = pathService.getShortestPathVertex(start, end, distance);
+        if (vertex == null) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_STATION_NOT_CONNECTED.getErrorMessage());
+        }
+        double according = pathService.getIntAccordingToDistanceShortest(vertex, time);
+        outputView.printResultDistance(shortest, according, vertex);
+    }
+
+    public void setShortestTimeAndAccording(StationLine start, StationLine end) {
+        List<String> vertex = pathService.getShortestPathVertex(start, end, time);
+        if (vertex == null) {
+            throw new IllegalArgumentException(ErrorMessage.INVALID_STATION_NOT_CONNECTED.getErrorMessage());
+        }
+        double according = pathService.getIntAccordingToTimeShortest(vertex, distance);
+        double shortest = pathService.getShortestPath(start, end, time);
+        outputView.printResultTime(shortest, according, vertex);
     }
 
     public String inputMenuHandler() {
@@ -125,6 +144,7 @@ public class SubwayController {
                 return start;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+                return null;
             }
         }
         return start;
@@ -138,6 +158,7 @@ public class SubwayController {
                 return end;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+                return null;
             }
         }
         return end;

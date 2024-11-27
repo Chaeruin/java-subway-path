@@ -20,9 +20,13 @@ public class PathService {
     public List<String> getShortestPathVertex(StationLine start, StationLine end,
                                               WeightedMultigraph<String, DefaultWeightedEdge> graph) {
         DijkstraShortestPath dijkstraShortestPath = new DijkstraShortestPath(graph);
-        List<String> shortestPath = dijkstraShortestPath.getPath(end.getStation().getName(),
-                start.getStation().getName()).getVertexList();
-
+        List<String> shortestPath = null;
+        try {
+            shortestPath = dijkstraShortestPath.getPath(end.getStation().getName(),
+                    start.getStation().getName()).getVertexList();
+        } catch (NullPointerException e) {
+            return null;
+        }
         return shortestPath;
     }
 
