@@ -1,4 +1,4 @@
-package subway.controller;
+package subway.service;
 
 import java.util.List;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -8,7 +8,7 @@ import subway.domain.Station;
 import subway.domain.StationLine;
 import subway.domain.StationLineRepository;
 
-public class InitController {
+public class InfoInitService {
 
     // 근데 이래봤자 누적돼서 리턴될듯
     public List<StationLine> initStationLineTwo() {
